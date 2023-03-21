@@ -1,10 +1,16 @@
 package ca.qc.sol_td6_v2.fel;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -37,6 +43,27 @@ public class ContactsActivity extends AppCompatActivity {
         // use adapter to display data
         adapter = new MyContactAdapter(contacts, this);
         rvContacts.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_ajouter:
+                //Toast.makeText(this, "Action Ajouter", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, AjoutActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

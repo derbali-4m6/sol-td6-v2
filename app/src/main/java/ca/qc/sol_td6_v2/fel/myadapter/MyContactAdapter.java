@@ -13,6 +13,9 @@ import java.util.List;
 
 import ca.qc.sol_td6_v2.R;
 import ca.qc.sol_td6_v2.fel.DetailsContactActivity;
+import ca.qc.sol_td6_v2.fel.EditionActivity;
+import ca.qc.sol_td6_v2.models.dao.ContactDAO;
+import ca.qc.sol_td6_v2.models.dao.IContactDAO;
 import ca.qc.sol_td6_v2.models.entities.Contact;
 
 public class MyContactAdapter extends RecyclerView.Adapter<MyViewHolder> {
@@ -48,6 +51,30 @@ public class MyContactAdapter extends RecyclerView.Adapter<MyViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailsContactActivity.class);
                 intent.putExtra("name", contacts.get(pos).getName());
+                context.startActivity(intent);
+            }
+        });
+
+        //click sur les actions delete ou edit
+        holder.deleteAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //supprimer le contact de la BD
+                IContactDAO dao = new ContactDAO(context);
+                Contact contact =  dao.deleteContactByID(contacts.get(pos).getId());
+                if(contact != null) {
+                    //adapter l'affichage
+                    contacts.remove(pos);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
+        holder.editAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent  =  new Intent(context, EditionActivity.class);
+                intent.putExtra("id", contacts.get(pos).getId());
                 context.startActivity(intent);
             }
         });
